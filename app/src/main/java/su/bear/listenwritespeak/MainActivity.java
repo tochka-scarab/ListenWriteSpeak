@@ -1,16 +1,45 @@
 package su.bear.listenwritespeak;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Locale;
+
+import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.content.pm.ResolveInfo;
+import android.speech.RecognizerIntent;
+import android.speech.tts.TextToSpeech;
+import android.speech.tts.TextToSpeech.OnInitListener;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.Toast;
+import android.widget.ListView;
+import android.widget.TextView;
 
 public class MainActivity extends AppCompatActivity
 {
+    //переменная для проверки возможности распознавания голоса в телефоне
+    private static final int VR_REQUEST=999;
+
+    //ListView для отображения распознанных слов
+    private ListView wordList;
+
+    //переменные для работы TTS
+    //переменная для проверки данных для TTS
+    private int MY_DATA_CHECK_CODE=0;
+
+    //Text To Speech интерфейс
+    private TextToSpeech repeatTTS;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
