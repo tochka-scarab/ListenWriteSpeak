@@ -44,8 +44,29 @@ public class MainActivity extends AppCompatActivity
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
+        //вызов суперкласса
         super.onCreate(savedInstanceState);
+        //установка контекста вывода
         setContentView(R.layout.activity_main);
+        //переменные для работы с кнопкой и списком распознанных слов
+        Button speechBtn = (Button) findViewById(R.id.speech_btn);
+        wordList = (ListView) findViewById(R.id.word_list);
+        //проверяем, поддерживается ли распознование речи
+        PackageManager packManager = getPackageManager();
+        List<ResolveInfo> intActivities = packManager.queryIntentActivities(new
+        Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH),0);
+        if(intActivities.size()!=0)
+        {
+            // распознавание поддерживается, будем отслеживать событие щелчка по кнопке
+            speechBtn.setOnClickListener((OnClickListener) this);
+        }
+        else
+        {
+            // распознавание не работает. Заблокируем кнопку и выведем соответствующее предупреждение.
+            speechBtn.setEnabled(false);
+            Toast.makeText(this,R.string.no_speech, Toast.LENGTH_LONG).show();
+        }
+
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
