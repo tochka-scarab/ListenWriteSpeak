@@ -1,30 +1,24 @@
 package su.bear.listenwritespeak;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Locale;
-
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
+import android.os.Bundle;
 import android.speech.RecognizerIntent;
 import android.speech.tts.TextToSpeech;
-import android.speech.tts.TextToSpeech.OnInitListener;
-import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.view.View;
-import android.view.View.OnClickListener;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
+import android.view.View;
+import android.view.View.OnClickListener;
 import android.widget.Button;
-import android.widget.Toast;
 import android.widget.ListView;
-import android.widget.TextView;
+import android.widget.Toast;
+
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity
 {
@@ -78,6 +72,31 @@ public class MainActivity extends AppCompatActivity
                         .setAction("Action", null).show();
             }
         });
+    }
+
+    public void onClick(View v)
+    {
+        if (v.getId() == R.id.speech_btn)
+        {
+            // отслеживаем результат
+            listenToSpeech();
+        }
+    }
+
+    private void listenToSpeech()
+    {
+        //запускаем интент, распознающий речь и передаем ему требуемые данные
+        Intent listenIntent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
+        //указываем пакет
+        listenIntent.putExtra(RecognizerIntent.EXTRA_CALLING_PACKAGE, getClass().getPackage().getName());
+        //В процессе распознования выводим сообщение
+        listenIntent.putExtra(RecognizerIntent.EXTRA_PROMPT, R.string.say_word);
+        //устанавливаем модель речи
+        listenIntent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
+        //указываем число результатов, которые могут быть получены
+        listenIntent.putExtra(RecognizerIntent.EXTRA_MAX_RESULTS, 10);
+        //начинаем прослушивание
+        startActivityForResult(listenIntent, VR_REQUEST);
     }
 
     @Override

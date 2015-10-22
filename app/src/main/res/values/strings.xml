@@ -5,4 +5,5 @@
     <string name="speech">Speak now!</string>
     <string name="word_intro">Suggested words&#8230;</string>
     <string name="no_speech">Oops - Speech recognition not supported!</string>
+    <string name="say_word">Say a word!</string>
 </resources>
