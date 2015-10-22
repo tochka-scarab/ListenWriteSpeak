@@ -14,10 +14,12 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity
@@ -97,6 +99,23 @@ public class MainActivity extends AppCompatActivity
         listenIntent.putExtra(RecognizerIntent.EXTRA_MAX_RESULTS, 10);
         //начинаем прослушивание
         startActivityForResult(listenIntent, VR_REQUEST);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCod, int resultCode, Intent data)
+    {
+        //проверяем результат распознавания речи
+        if (requestCod == VR_REQUEST&&resultCode == RESULT_OK)
+        {
+            //Добавляем распознанные слова в список результатов
+            ArrayList<String> suggestedWords = data.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS);
+            //Передаем список возможных слов через ArrayAdapter компоненту ListView
+            wordList.setAdapter (new ArrayAdapter<String>(this, R.layout.word, suggestedWords));
+        }
+        //tss код здесь
+
+        //вызываем метод родительского класса
+        super.onActivityResult(requestCod, resultCode, data);
     }
 
     @Override
